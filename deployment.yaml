@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: travel-advisory-exporter
+  labels:
+    app: travel-advisory-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: travel-advisory-exporter
+  template:
+    metadata:
+      labels:
+        app: travel-advisory-exporter
+    spec:
+      containers:
+      - name: exporter
+        image: dawidch/travel-advisory-exporter:1.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+          name: metrics
+        env:
+        - name: COUNTRIES
+          value: "poland,germany,france,ukraine"
+        - name: SCRAPE_INTERVAL
+          value: "3600"
+        resources:
+          limits:
+            cpu: "100m"
+            memory: "128Mi"
+          requests:
+            cpu: "20m"
+            memory: "64Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: travel-advisory-exporter
+  labels:
+    app: travel-advisory-exporter
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8000
+    targetPort: metrics
+    name: metrics
+  selector:
+    app: travel-advisory-exporter
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: travel-advisory-exporter
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: travel-advisory-exporter
+  endpoints:
+  - port: metrics
+    interval: 60s
