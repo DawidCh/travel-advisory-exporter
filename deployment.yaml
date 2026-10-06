@@ -22,8 +22,8 @@ spec:
         - containerPort: 8000
           name: metrics
         env:
-        - name: COUNTRIES
-          value: "poland,germany,france,ukraine"
+        - name: COUNTRY_PATTERN
+          value: ".*(poland|germany|france|ukraine).*"
         - name: SCRAPE_INTERVAL
           value: "3600"
         resources:
