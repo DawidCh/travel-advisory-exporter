@@ -23,7 +23,7 @@ spec:
           name: metrics
         env:
         - name: COUNTRY_PATTERN
-          value: ".*(poland|germany|france|ukraine).*"
+          value: "poland|germany|france|ukraine"
         - name: SCRAPE_INTERVAL
           value: "3600"
         resources:

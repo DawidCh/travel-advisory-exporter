@@ -8,7 +8,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app.py .
 
 ENV PORT=8000
-ENV COUNTRY_PATTERN=".*poland.*"
+ENV COUNTRY_PATTERN="poland"
 ENV SCRAPE_INTERVAL=3600
 
 EXPOSE 8000
